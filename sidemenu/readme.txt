@@ -3,9 +3,9 @@ Contributors: domainsupport
 Donate link: https://webd.uk/product/sidemenu-upgrade/
 Tags: slide menu, side menu, side nav, vertical menu
 Requires at least: 4.6
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ Easily use this plugin to add a SideMenu to your WordPress website ...
 https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Changelog ==
+
+= 1.8.3 =
+* Remove Customizer CSS due to incompatible change introduced in WordPress v6.7
 
 = 1.8.2 =
 * Added support for Genesis Block Theme's custom header mobile menu button hijack
@@ -343,5 +346,5 @@ https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Upgrade Notice ==
 
-= 1.8.2 =
-* Added support for Genesis Block Theme's custom header mobile menu button hijack
+= 1.8.3 =
+* Remove Customizer CSS due to incompatible change introduced in WordPress v6.7

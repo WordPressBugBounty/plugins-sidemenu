@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: SideMenu
- * Version: 1.8.2
+ * Version: 1.8.3
  * Plugin URI: https://webd.uk/product/sidemenu-upgrade/
  * Description: Injects a sliding side menu / sidebar into any theme!
  * Author: Webd Ltd
@@ -21,7 +21,7 @@ if (!class_exists('sidemenu_class')) {
 
 	class sidemenu_class {
 
-        public static $version = '1.8.2';
+        public static $version = '1.8.3';
 
         private $mobile_toggles = array(
             'twentyseventeen' => 'button.menu-toggle',
@@ -62,7 +62,6 @@ if (!class_exists('sidemenu_class')) {
 
             if (is_admin()) {
 
-                add_action('customize_controls_enqueue_scripts', array($this, 'sidemenu_enqueue_customizer_scripts'));
                 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'sidemenu_add_plugin_action_links'));
                 add_action('admin_notices', 'sidemenuCommon::admin_notices');
                 add_action('wp_ajax_dismiss_sidemenu_notice_handler', 'sidemenuCommon::ajax_notice_handler');
@@ -523,12 +522,6 @@ if (!class_exists('sidemenu_class')) {
             $control_label = __('Menu Item Hover Animation', 'sidemenu');
             $control_description = __('Adds a hover animation underneath each menu item in the SideMenu.', 'sidemenu');
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_menu_item_hover_anim', 'sidemenu_menu_items', $label = $control_label, $control_description . ' ' . $upgrade_nag);
-
-        }
-
-        function sidemenu_enqueue_customizer_scripts() {
-
-            wp_enqueue_style('sidemenu-customizer-css', plugin_dir_url(__FILE__) . 'css/theme-customizer.css', array(), sidemenuCommon::plugin_version());
 
         }
 
