@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: SideMenu
- * Version: 1.8.3
+ * Version: 1.8.4
  * Plugin URI: https://webd.uk/product/sidemenu-upgrade/
  * Description: Injects a sliding side menu / sidebar into any theme!
  * Author: Webd Ltd
@@ -21,7 +21,7 @@ if (!class_exists('sidemenu_class')) {
 
 	class sidemenu_class {
 
-        public static $version = '1.8.3';
+        public static $version = '1.8.4';
 
         private $mobile_toggles = array(
             'twentyseventeen' => 'button.menu-toggle',
@@ -49,7 +49,8 @@ if (!class_exists('sidemenu_class')) {
         );
 
         private $reconstruct_toggle = array(
-            'twentytwenty' => true
+            'twentytwenty' => true,
+            'Divi' => true
         );
 
 		function __construct() {
