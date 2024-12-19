@@ -86,14 +86,17 @@ var sidemenuJS = function() {
                 }
                 if (
                     buttonWrapper.classList[0] &&
-                    buttonWrapper.classList[0] !== 'close_sidemenu' &&
+                    'close_sidemenu' !== buttonWrapper.classList[0] &&
+                    'wp-block-buttons' !== buttonWrapper.classList[0] &&
                     (
-                        buttonWrapper.classList[1] && 
-                        buttonWrapper.classList[1] !== 'menu-item' &&
-                        'wp-block-sidemenu-sidemenu' !== buttonWrapper.classList[0]
-                    ) || (
-                        buttonWrapper.classList[2] &&
-                        'wp-block-sidemenu-sidemenu' === buttonWrapper.classList[0]
+                        (
+                            buttonWrapper.classList[1] && 
+                            buttonWrapper.classList[1] !== 'menu-item' &&
+                            'wp-block-sidemenu-sidemenu' !== buttonWrapper.classList[0]
+                        ) || (
+                            buttonWrapper.classList[2] &&
+                            'wp-block-sidemenu-sidemenu' === buttonWrapper.classList[0]
+                        )
                     )
                 ) {
                     var showClassContent = buttonWrapper.classList[1];

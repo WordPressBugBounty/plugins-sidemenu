@@ -3,9 +3,9 @@ Contributors: domainsupport
 Donate link: https://webd.uk/product/sidemenu-upgrade/
 Tags: slide menu, side menu, side nav, vertical menu
 Requires at least: 4.6
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 5.6
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,9 @@ Easily use this plugin to add a SideMenu to your WordPress website ...
 https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Changelog ==
+
+= 1.8.5 =
+* Bug fix to allow a Button Block to open the SideMenu by adding the following classes to the block "wp-block-sidemenu-sidemenu open_sidemenu"
 
 = 1.8.4 =
 * Bug fix for Divi theme mobile menu hijack
@@ -349,5 +352,5 @@ https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Upgrade Notice ==
 
-= 1.8.4 =
-* Bug fix for Divi theme mobile menu hijack
+= 1.8.5 =
+* Bug fix to allow a Button Block to open the SideMenu by adding the following classes to the block "wp-block-sidemenu-sidemenu open_sidemenu"
