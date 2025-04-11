@@ -3,7 +3,7 @@ Contributors: domainsupport
 Donate link: https://webd.uk/product/sidemenu-upgrade/
 Tags: slide menu, side menu, side nav, vertical menu
 Requires at least: 4.6
-Tested up to: 6.7.1
+Tested up to: 6.8
 Requires PHP: 5.6
 Stable tag: 1.8.5
 License: GPLv2 or later
