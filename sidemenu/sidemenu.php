@@ -1,11 +1,13 @@
 <?php
 /*
  * Plugin Name: SideMenu
- * Version: 1.8.7
+ * Version: 1.8.9
  * Plugin URI: https://webd.uk/product/sidemenu-upgrade/
  * Description: Injects a sliding side menu / sidebar into any theme!
  * Author: Webd Ltd
  * Author URI: https://webd.uk
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain: sidemenu
  */
 
@@ -21,7 +23,7 @@ if (!class_exists('sidemenu_class')) {
 
 	class sidemenu_class {
 
-        public static $version = '1.8.7';
+        public static $version = '1.8.9';
 
         private $mobile_toggles = array(
             'twentyseventeen' => 'button.menu-toggle',
@@ -36,6 +38,7 @@ if (!class_exists('sidemenu_class')) {
             'twentytwentytwo' => 'button.wp-block-navigation__responsive-container-open',
             'twentytwenty' => 'button.toggle.nav-toggle.mobile-nav-toggle',
             'inspiro' => 'button.navbar-toggle',
+            'genesis' => 'button.menu-toggle',
             'genesis-block-theme' => 'button.menu-toggle.button-toggle',
             'Avada' => '.fusion-mobile-selector',
             'avanam' => '.drawer-toggle'
@@ -247,6 +250,7 @@ if (!class_exists('sidemenu_class')) {
 
             } else {
 
+/* translators: link to plugin support forum */
                 $control_description = sprintf(wp_kses(__('If you\'d like to be able to open the SideMenu with your theme\'s existing mobile menu button, <a href="%s">submit a feature request</a>.', 'sidemenu'), array('a' => array('href' => array(), 'class' => array()))), esc_url('https://wordpress.org/support/plugin/sidemenu/'));
                 sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_hijack_toggle', 'sidemenu_open_button', $control_label, $control_description, 10);
 
@@ -357,6 +361,7 @@ if (!class_exists('sidemenu_class')) {
             )));
 
             $control_label = __('Dashicon', 'sidemenu');
+/* translators: link dashicon documentation */
             $control_description = sprintf(wp_kses(__('Choose your own <a href="%s">dashicon</a> for the button that opens the SideMenu.', 'sidemenu'), array('a' => array('href' => array()))), esc_url('https://developer.wordpress.org/resource/dashicons/'));
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_dashicon', 'sidemenu_open_button', $control_label, $control_description . ' ' . $upgrade_nag);
 
@@ -441,6 +446,7 @@ if (!class_exists('sidemenu_class')) {
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_title_text_align', 'sidemenu_style', $control_label, $control_description . ' ' . $upgrade_nag);
 
             $control_label = __('Close Dashicon', 'sidemenu');
+/* translators: link to dashicon documentation */
             $control_description = sprintf(wp_kses(__('Choose your own <a href="%s">dashicon</a> for the button that closes the SideMenu.', 'sidemenu'), array('a' => array('href' => array()))), esc_url('https://developer.wordpress.org/resource/dashicons/'));
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_close_dashicon', 'sidemenu_close_button', $label = $control_label, $control_description . ' ' . $upgrade_nag);
 
@@ -477,6 +483,7 @@ if (!class_exists('sidemenu_class')) {
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_menu_padding', 'sidemenu_style', $control_label, $control_description . ' ' . $upgrade_nag);
 
             $control_label = __('Sub-Menu Toggle Dashicon', 'sidemenu');
+/* translators: link to the dashicon documentation */
             $control_description = sprintf(wp_kses(__('Choose your own <a href="%s">dashicon</a> for the sub-menu toggle button.', 'sidemenu'), array('a' => array('href' => array()))), esc_url('https://developer.wordpress.org/resource/dashicons/'));
             sidemenuCommon::add_hidden_control($wp_customize, 'sidemenu_submenu_toggle', 'sidemenu_submenus', $label = $control_label, $control_description . ' ' . $upgrade_nag);
 
@@ -549,6 +556,7 @@ if (!class_exists('sidemenu_class')) {
 
                 if (current_user_can('manage_options')) { 
 
+/* translators: link to legacy menu dashboard */
                     $l10n['openbuttonhelp'] = '<h2>' . __('Nearly there ...', 'sidemenu') . '</h2><p>' . sprintf(wp_kses(__('The SideMenu has opened because you are signed in as a administrator. You need to add a button to open the SideMenu on this page by adding a <a href="%s">menu item</a> or by using a [sidemenu] shortcode.', 'sidemenu'), array('a' => array('href' => array()))), esc_url(admin_url('nav-menus.php'))) . '</p>';
 
                 }
@@ -681,7 +689,7 @@ if (!class_exists('sidemenu_class')) {
 
                 if ($show_close_icon) {
 
-?><a href="#" class="close_sidemenu" title="<?php esc_attr_e('Close menu'); ?>" aria-label="<?php esc_attr_e('Close menu'); ?>"><span class="dashicons dashicons-<?php echo $close_dashicon; ?>"></span></a><?php
+?><a href="#" class="close_sidemenu" title="<?php esc_attr_e('Close menu', 'sidemenu'); ?>" aria-label="<?php esc_attr_e('Close menu', 'sidemenu'); ?>"><span class="dashicons dashicons-<?php echo esc_attr($close_dashicon); ?>"></span></a><?php
 
                 }
 
@@ -707,7 +715,8 @@ if (!class_exists('sidemenu_class')) {
 
     		    if (!is_active_sidebar('sidemenu') && !has_nav_menu('sidemenu') && current_user_can('manage_options')) {
 
-?><section><h2><?php esc_html_e('And finally ...', 'sidemenu'); ?></h2><p><?php printf(wp_kses(__('Add some content to your SideMenu by adding a <a href="%s">widget</a> and / or a <a href="%s">menu</a> to the SideMenu.', 'sidemenu'), array('a' => array('href' => array()))), esc_url(admin_url('widgets.php')), esc_url(admin_url('nav-menus.php'))); ?></p></section><?php
+/* translators: links to legacy widgets and menu dashboards */
+?><section><h2><?php esc_html_e('And finally ...', 'sidemenu'); ?></h2><p><?php printf(wp_kses(__('Add some content to your SideMenu by adding a <a href="%1$s">widget</a> and / or a <a href="%2$s">menu</a> to the SideMenu.', 'sidemenu'), array('a' => array('href' => array()))), esc_url(admin_url('widgets.php')), esc_url(admin_url('nav-menus.php'))); ?></p></section><?php
 
     		    }
 
@@ -895,11 +904,11 @@ if (!class_exists('sidemenu_class')) {
 
 ?>
 .widget_nav_menu a, .sidemenu-navigation a {
-    border-left: <?php echo $mod; ?>px solid <?php echo $mod_color; ?>;
+    border-left: <?php echo wp_kses($mod, 'strip'); ?>px solid <?php echo wp_kses($mod_color, 'strip'); ?>;
     padding-left: 10px;
 }
 .widget_nav_menu a:hover, .sidemenu-navigation a:hover {
-    border-left-color: <?php echo $mod_hover_color; ?>;
+    border-left-color: <?php echo wp_kses($mod_hover_color, 'strip'); ?>;
 }
 <?php
 
@@ -1003,7 +1012,7 @@ if (!class_exists('sidemenu_class')) {
 
         function sidemenu_widget_form_callback( $instance, $widget ) {
 
-            if (isset($widget->id)) { echo '<p class="sidemenu-class">SideMenu Class: <strong>' . $widget->id . '</strong></p>'; }
+            if (isset($widget->id)) { echo wp_kses('<p class="sidemenu-class">SideMenu Class: <strong>' . $widget->id . '</strong></p>', 'post'); }
 
         	return $instance;
 

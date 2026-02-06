@@ -3,9 +3,9 @@ Contributors: domainsupport
 Donate link: https://webd.uk/product/sidemenu-upgrade/
 Tags: slide menu, side menu, side nav, vertical menu
 Requires at least: 4.6
-Tested up to: 6.8.2
+Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.8.7
+Stable tag: 1.8.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,7 @@ This plugin can also hijack the existing mobile menu button within your theme if
 * BeTheme
 * Divi
 * Genesis Block Theme
+* Genesis Framework
 * Inspiro
 * OKAB
 * Twenty Seventeen
@@ -83,6 +84,12 @@ Easily use this plugin to add a SideMenu to your WordPress website ...
 https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Changelog ==
+
+= 1.8.9 =
+* General housekeeping preparing for "Plugin Check" code review
+
+= 1.8.8 =
+* Added support to hijack the mobile menu toggle in Genesis Framework theme
 
 = 1.8.7 =
 * Added support to hijack the mobile menu toggle in Avanam theme
@@ -360,5 +367,5 @@ https://www.youtube.com/watch?v=ac50F_Sufog
 
 == Upgrade Notice ==
 
-= 1.8.7 =
-* Added support to hijack the mobile menu toggle in Avanam theme
+= 1.8.9 =
+* General housekeeping preparing for "Plugin Check" code review

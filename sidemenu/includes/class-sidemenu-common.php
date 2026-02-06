@@ -1,6 +1,6 @@
 <?php
 /*
- * Version: 1.3.9
+ * Version: 1.4.3
  */
 
 
@@ -42,7 +42,7 @@ if (!class_exists('sidemenuCommon')) {
 
         public static function plugin_text_domain() {
 
-            return self::$plugin_text_domain;
+            return 'sidemenu';
 
         }
 
@@ -60,19 +60,21 @@ if (!class_exists('sidemenuCommon')) {
 
         public static function support_url() {
 
-            return 'https://wordpress.org/support/plugin/' . self::$plugin_text_domain . '/';
+            return 'https://wordpress.org/support/plugin/' . 'sidemenu' . '/';
 
         }
 
         public static function control_upgrade_text() {
 
-            $upgrade_text = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Upgrade now to %s Premium', self::$plugin_text_domain), self::$plugin_name)) . '">' . sprintf(__('Upgrade now to %s Premium', self::$plugin_text_domain), self::$plugin_name) . '</a>';
+/* translators: name of the plugin */
+            $upgrade_text = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Upgrade now to %s Premium', 'sidemenu'), self::$plugin_name)) . '">' . sprintf(__('Upgrade now to %s Premium', 'sidemenu'), self::$plugin_name) . '</a>';
 
             if (!class_exists(self::$plugin_premium_class) || !get_option(self::$plugin_prefix . '_purchased')) {
 
                 if (!class_exists(self::$plugin_premium_class)) {
 
-                    $upgrade_text .= sprintf(wp_kses(__(' or <a href="%s" title="Download Free Trial">trial it for 7 days</a>', self::$plugin_text_domain), array('a' => array('href' => array(), 'title' => array()))), esc_url(self::premium_link()));
+/* translators: link to the premium upgrade */
+                    $upgrade_text .= sprintf(wp_kses(__(' or <a href="%s" title="Download Free Trial">trial it for 7 days</a>', 'sidemenu'), array('a' => array('href' => array(), 'title' => array()))), esc_url(self::premium_link()));
 
                 }
 
@@ -84,7 +86,8 @@ if (!class_exists('sidemenuCommon')) {
 
         public static function control_section_description() {
 
-            $default_description = sprintf(wp_kses(__('If you have any requests for new features, please <a href="%s" title="Support Forum">let us know in the support forum</a>.', self::$plugin_text_domain), array('a' => array('href' => array(), 'title' => array()))), esc_url(self::support_url()));
+/* translators: link to the plugin's support forum */
+            $default_description = sprintf(wp_kses(__('If you have any requests for new features, please <a href="%s" title="Support Forum">let us know in the support forum</a>.', 'sidemenu'), array('a' => array('href' => array(), 'title' => array()))), esc_url(self::support_url()));
 
             if (self::$plugin_premium_class) {
 
@@ -94,11 +97,11 @@ if (!class_exists('sidemenuCommon')) {
 
                     if (!class_exists(self::$plugin_premium_class)) {
 
-                        $section_description = '<strong>' . __('For even more options', self::$plugin_text_domain) . '</strong>' . ' ' . $upgrade_text;
+                        $section_description = '<strong>' . __('For even more options', 'sidemenu') . '</strong>' . ' ' . $upgrade_text;
 
                     } else {
 
-                        $section_description = '<strong>' . __('To keep using premium options', self::$plugin_text_domain) . '</strong>' . ' ' . $upgrade_text;
+                        $section_description = '<strong>' . __('To keep using premium options', 'sidemenu') . '</strong>' . ' ' . $upgrade_text;
 
                     }
 
@@ -118,9 +121,10 @@ if (!class_exists('sidemenuCommon')) {
 
                 $section_description .= ' ' . sprintf(
                     wp_kses(
+/* translators: link to plugin install page */
                         __(
                             '<strong>To reset this section of options to default settings</strong> without affecting other sections in the customizer, install <a href="%s" title="Reset Customizer">Reset Customizer</a>.',
-                            self::$plugin_text_domain
+                            'sidemenu'
                         ),
                         array('strong' => array(), 'a' => array('href' => array(), 'title' => array()))
                     ),
@@ -144,7 +148,7 @@ if (!class_exists('sidemenuCommon')) {
 
         public static function control_setting_upgrade_nag() {
 
-            $upgrade_nag = self::control_upgrade_text() . __(' to use this option.', self::$plugin_text_domain);
+            $upgrade_nag = self::control_upgrade_text() . __(' to use this option.', 'sidemenu');
 
             return $upgrade_nag;
 
@@ -233,12 +237,16 @@ if (!class_exists('sidemenuCommon')) {
             if ($mod && $value === '') {
 
                 $generated_css = sprintf('%s { %s: %s; }', $selector, $style, $prefix.$mod.$postfix);
-                echo $generated_css;
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo wp_strip_all_tags($generated_css);
 
             } elseif ($mod) {
 
                 $generated_css = sprintf('%s { %s:%s; }', $selector, $style, $prefix.$value.$postfix);
-                echo $generated_css;
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo wp_strip_all_tags($generated_css);
 
             }
 
@@ -248,8 +256,15 @@ if (!class_exists('sidemenuCommon')) {
 
             if (self::$plugin_premium_class) {
 
-                return add_query_arg('url', (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'], 'https://webd.uk/product/' . self::$plugin_text_domain . '-upgrade/');
+                if (isset($_SERVER['HTTP_HOST'])) {
 
+                    return add_query_arg('url', (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . filter_var(wp_unslash($_SERVER['HTTP_HOST'], FILTER_SANITIZE_URL)), 'https://webd.uk/product/' . 'sidemenu' . '-upgrade/');
+
+                } else {
+
+                    return 'https://webd.uk/product/' . 'sidemenu' . '-upgrade/';
+
+                }
 
             } else {
 
@@ -275,7 +290,7 @@ if (!class_exists('sidemenuCommon')) {
 
             $settings_links = array();
 
-			$settings_links[] = '<a href="' . esc_url($settings_link) . '" title="' . esc_attr(__('Settings', self::$plugin_text_domain)) . '">' . __('Settings', self::$plugin_text_domain) . '</a>';
+			$settings_links[] = '<a href="' . esc_url($settings_link) . '" title="' . esc_attr(__('Settings', 'sidemenu')) . '">' . __('Settings', 'sidemenu') . '</a>';
 
             if (!get_option(self::$plugin_prefix . '_purchased')) {
 
@@ -283,33 +298,37 @@ if (!class_exists('sidemenuCommon')) {
 
                     if (self::$plugin_upgrade) {
 
-                        $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Buy %s Premium', self::$plugin_text_domain), self::$plugin_name)) . '" style="color: orange; font-weight: bold;">' . __('Buy Now', self::$plugin_text_domain) . '</a>';
+/* translators: name of the plugin */
+                        $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Buy %s Premium', 'sidemenu'), self::$plugin_name)) . '" style="color: orange; font-weight: bold;">' . __('Buy Now', 'sidemenu') . '</a>';
 
                     } else {
 
-                        $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Buy %s', self::$plugin_text_domain), self::$plugin_name)) . '" style="color: orange; font-weight: bold;">' . __('Buy Now', self::$plugin_text_domain) . '</a>';
+/* translators: name of the plugin */
+                        $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr(sprintf(__('Buy %s', 'sidemenu'), self::$plugin_name)) . '" style="color: orange; font-weight: bold;">' . __('Buy Now', 'sidemenu') . '</a>';
 
                     }
 
                 } else {
 
-                    $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr((self::$plugin_premium_class ? sprintf(__('Upgrade now to %s Premium', self::$plugin_text_domain), self::$plugin_name) : sprintf(__('Contribute to %s', self::$plugin_text_domain), self::$plugin_name))) . '" style="color: orange; font-weight: bold;">' . (self::$plugin_premium_class ? __('Upgrade', self::$plugin_text_domain) : __('Support Us', self::$plugin_text_domain)) . '</a>';
+/* translators: name of the plugin */
+                    $settings_links[] = '<a href="' . esc_url(self::upgrade_link()) . '" title="' . esc_attr((self::$plugin_premium_class ? sprintf(__('Upgrade now to %s Premium', 'sidemenu'), self::$plugin_name) : sprintf(__('Contribute to %s', 'sidemenu'), self::$plugin_name))) . '" style="color: orange; font-weight: bold;">' . (self::$plugin_premium_class ? __('Upgrade', 'sidemenu') : __('Support Us', 'sidemenu')) . '</a>';
 
                 }
 
                 if ($premium) {
 
-                    $settings_links[] = '<a href="' . wp_nonce_url('?activate-' . self::$plugin_prefix . '=true', self::$plugin_prefix . '_activate') . '" id="' . self::$plugin_prefix . '_activate_upgrade" title="' . esc_attr(__('Activate Purchase', self::$plugin_text_domain)) . '" onclick="jQuery(this).append(&#39; <img src=&#34;/wp-admin/images/loading.gif&#34; style=&#34;float: none; width: auto; height: auto;&#34; />&#39;); setTimeout(function(){document.getElementById(\'' . self::$plugin_prefix . '_activate_upgrade\').removeAttribute(\'href\');},1); return true;">' . __('Activate Purchase', self::$plugin_text_domain) . '</a>';
+                    $settings_links[] = '<a href="' . wp_nonce_url('?activate-' . self::$plugin_prefix . '=true', self::$plugin_prefix . '_activate') . '" id="' . self::$plugin_prefix . '_activate_upgrade" title="' . esc_attr(__('Activate Purchase', 'sidemenu')) . '" onclick="jQuery(this).append(&#39; <img src=&#34;/wp-admin/images/loading.gif&#34; style=&#34;float: none; width: auto; height: auto;&#34; />&#39;); setTimeout(function(){document.getElementById(\'' . self::$plugin_prefix . '_activate_upgrade\').removeAttribute(\'href\');},1); return true;">' . __('Activate Purchase', 'sidemenu') . '</a>';
 
-                } elseif (self::$plugin_trial && !is_plugin_active(self::$plugin_text_domain . '-premium/' . self::$plugin_text_domain . '-premium.php')) {
+                } elseif (self::$plugin_trial && !is_plugin_active('sidemenu' . '-premium/' . 'sidemenu' . '-premium.php')) {
 
-                    $settings_links[] = '<a href="' . esc_url(self::premium_link()) . '" title="' . esc_attr(sprintf(__('Trial %s Premium', self::$plugin_text_domain), self::$plugin_name)) . ' for 7 days">' . __('Download Trial', self::$plugin_text_domain) . '</a>';
+/* translators: name of the plugin */
+                    $settings_links[] = '<a href="' . esc_url(self::premium_link()) . '" title="' . esc_attr(sprintf(__('Trial %s Premium', 'sidemenu'), self::$plugin_name)) . ' for 7 days">' . __('Download Trial', 'sidemenu') . '</a>';
 
                 }
 
             } elseif ($premium) {
 
-                $settings_links[] = '<strong style="color: green; display: inline;">' . __('Purchase Confirmed', self::$plugin_text_domain) . '</strong>';
+                $settings_links[] = '<strong style="color: green; display: inline;">' . __('Purchase Confirmed', 'sidemenu') . '</strong>';
 
             }
 
@@ -319,10 +338,11 @@ if (!class_exists('sidemenuCommon')) {
 
         public static function plugin_row_meta($plugin_meta, $plugin_file, $plugin_data, $status) {
 
-            if ($plugin_file === self::$plugin_text_domain . '/' . self::$plugin_text_domain . '.php') {
+            if ($plugin_file === 'sidemenu' . '/' . 'sidemenu' . '.php') {
 
-                $plugin_meta[] = '<a href="' . esc_url(self::support_url()) . '" title="' . __('Problems? We are here to help!', self::$plugin_text_domain) . '" style="color: orange; font-weight: bold;">' . __('Need help?', self::$plugin_text_domain) . '</a>';
-                $plugin_meta[] = '<a href="https://wordpress.org/support/plugin/' . self::$plugin_text_domain . '/reviews/#new-post" title="' . esc_attr(sprintf(__('If you like %s, please leave a review!', self::$plugin_text_domain), self::$plugin_name)) . '">' . __('Review plugin', self::$plugin_text_domain) . '</a>';
+                $plugin_meta[] = '<a href="' . esc_url(self::support_url()) . '" title="' . __('Problems? We are here to help!', 'sidemenu') . '" style="color: orange; font-weight: bold;">' . __('Need help?', 'sidemenu') . '</a>';
+/* translators: name of the plugin */
+                $plugin_meta[] = '<a href="https://wordpress.org/support/plugin/' . 'sidemenu' . '/reviews/#new-post" title="' . esc_attr(sprintf(__('If you like %s, please leave a review!', 'sidemenu'), self::$plugin_name)) . '">' . __('Review plugin', 'sidemenu') . '</a>';
 
             }
 
@@ -352,26 +372,32 @@ if (!class_exists('sidemenuCommon')) {
 
             if (self::$plugin_premium_class) {
 
-                if (get_option(self::$plugin_prefix . '_purchased') && !class_exists(self::$plugin_premium_class) && get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version()) {
+                if (
+                    get_option(self::$plugin_prefix . '_purchased') &&
+                    !class_exists(self::$plugin_premium_class) &&
+                    get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version()
+                ) {
 
 ?>
 
-<div class="notice notice-error is-dismissible <?php echo self::$plugin_prefix; ?>-notice">
+<div class="notice notice-error is-dismissible <?php echo esc_html(self::$plugin_prefix); ?>-notice">
 
-<p><strong><?php echo self::$plugin_name; ?></strong><br />
-<?php esc_html_e('In order to use the premium features, you need to install the premium version of the plugin ...', self::$plugin_text_domain); ?></p>
+<p><strong><?php echo esc_html(self::$plugin_name); ?></strong><br />
+<?php esc_html_e('In order to use the premium features, you need to install the premium version of the plugin ...', 'sidemenu'); ?></p>
 
-<p><a href="<?php echo esc_url(self::premium_link()); ?>" title="<?php echo esc_attr(sprintf(__('Download %s Premium', self::$plugin_text_domain), self::$plugin_name)); ?>" class="button-primary"><?php printf(__('Download %s Premium', self::$plugin_text_domain), self::$plugin_name); ?></a></p>
+<p><a href="<?php
+/* translators: name of the plugin */
+echo esc_url(self::premium_link()); ?>" title="<?php echo esc_attr(sprintf(__('Download %s Premium', 'sidemenu'), self::$plugin_name)); ?>" class="button-primary"><?php printf(esc_html(__('Download %s Premium', 'sidemenu')), esc_html(self::$plugin_name)); ?></a></p>
 
 </div>
 
 <script type="text/javascript">
-    jQuery(document).on('click', '.<?php echo self::$plugin_prefix; ?>-notice .notice-dismiss', function() {
+    jQuery(document).on('click', '.<?php echo esc_attr(self::$plugin_prefix); ?>-notice .notice-dismiss', function() {
 	    jQuery.ajax({
     	    url: ajaxurl,
     	    data: {
-        		action: 'dismiss_<?php echo self::$plugin_prefix; ?>_notice_handler',
-        		_ajax_nonce: '<?php echo wp_create_nonce(self::$plugin_prefix . '-ajax-nonce'); ?>'
+        		action: 'dismiss_<?php echo esc_attr(self::$plugin_prefix); ?>_notice_handler',
+        		_ajax_nonce: '<?php echo esc_attr(wp_create_nonce(self::$plugin_prefix . '-ajax-nonce')); ?>'
     	    }
     	});
     });
@@ -379,51 +405,89 @@ if (!class_exists('sidemenuCommon')) {
 
 <?php
 
-                } elseif (!class_exists(self::$plugin_premium_class) && time() > (strtotime('+1 hour', filectime(__DIR__))) && get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version()) {
+                } elseif (
+                    !class_exists(self::$plugin_premium_class) &&
+                    time() > (strtotime('+1 hour', filectime(__DIR__))) &&
+                    get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version()
+                ) {
 
 ?>
 
-<div class="notice notice-info is-dismissible <?php echo self::$plugin_prefix; ?>-notice">
+<div class="notice notice-info is-dismissible <?php echo esc_attr(self::$plugin_prefix); ?>-notice">
 
-<p><strong><?php printf(__('Thank you for using %s plugin', self::$plugin_text_domain), self::$plugin_name); ?></strong><br />
+    <p style="font-size:15px;"><strong><?php
+/* translators: name of the plugin */
+printf(esc_html(__('Thank you for using %s plugin', 'sidemenu')), esc_html(self::$plugin_name)); ?></strong></p>
 <?php
 
                     if (self::$plugin_trial == true) {
 
-                        _e('Would you like to try even more features? Download your 7 day free trial now!', self::$plugin_text_domain); 
+?>
+
+    <p><?php echo esc_html(__('Would you like to try even more features? Download your 7 day free trial now!', 'sidemenu')); ?></p>
+<?php
 
                     } else {
 
-                        echo sprintf(__('Upgrade now to %s Premium to enable more options and features and contribute to the further development of this plugin.', self::$plugin_text_domain), self::$plugin_name);
-
-                    }
-
-?></p>
-
-<p><?php
-
-                    if (self::$plugin_trial == true) {
-
 ?>
 
-<a href="<?php echo esc_url(self::premium_link()); ?>" title="<?php echo esc_attr(sprintf(__('Try %s Premium', self::$plugin_text_domain), self::$plugin_name)); ?>" class="button-primary"><?php printf(__('Trial %s Premium for 7 days', self::$plugin_text_domain), self::$plugin_name); ?></a>
-
+    <p>
+        <?php
+/* translators: name of the plugin */
+                        echo esc_html(sprintf(__('Upgrade now to %s Premium to enable more options and features and contribute to the further development of this plugin.', 'sidemenu'), self::$plugin_name)); ?>
+    </p>
 <?php
 
                     }
 
 ?>
-<a href="<?php echo esc_url(self::upgrade_link()); ?>" title="<?php echo esc_attr(sprintf(__('Upgrade now to %s Premium', self::$plugin_text_domain), self::$plugin_name)); ?>" class="button-primary"><?php printf(__('Upgrade now to %s Premium', self::$plugin_text_domain), self::$plugin_name); ?></a></p>
+
+    <p><?php
+
+                    if (self::$plugin_trial == true) {
+
+?>
+
+        <a href="<?php echo esc_url(self::premium_link()); ?>" 
+           title="<?php
+/* translators: name of the plugin */
+echo esc_attr(sprintf(__('Try %s Premium', 'sidemenu'), self::$plugin_name)); ?>" 
+           class="button-secondary">
+           <?php echo esc_html(__('Try premium plugin free for 7 days', 'sidemenu')); ?>
+        </a>
+<?php
+
+                    }
+
+?>
+
+        <a href="<?php echo esc_url(self::upgrade_link()); ?>" 
+           title="<?php
+/* translators: name of the plugin */
+echo esc_attr(sprintf(__('Upgrade now to %s Premium', 'sidemenu'), self::$plugin_name)); ?>" 
+           class="button-primary">
+           <?php echo esc_html(__('Upgrade now to premium plugin', 'sidemenu')); ?>
+        </a>
+
+    </p>
+
+    <hr style="margin:12px 0;">
+
+    <p>
+        <strong>✨ Need help with your WordPress site?</strong>
+        🚀 Slow, want new features, or need a glow-up?
+        <a href="https://webd.uk/services/?utm_campaign=notice&utm_term=sidemenu" class="button-secondary" style="margin-left:6px; vertical-align: middle;">Explore our services</a>
+    </p>
 
 </div>
 
 <script type="text/javascript">
-    jQuery(document).on('click', '.<?php echo self::$plugin_prefix; ?>-notice .notice-dismiss', function() {
+    jQuery(document).on('click', '.<?php echo esc_attr(self::$plugin_prefix); ?>-notice .notice-dismiss', function() {
 	    jQuery.ajax({
     	    url: ajaxurl,
     	    data: {
-        		action: 'dismiss_<?php echo self::$plugin_prefix; ?>_notice_handler',
-        		_ajax_nonce: '<?php echo wp_create_nonce(self::$plugin_prefix . '-ajax-nonce'); ?>'
+        		action: 'dismiss_<?php echo esc_attr(self::$plugin_prefix); ?>_notice_handler',
+        		_ajax_nonce: '<?php echo esc_attr(wp_create_nonce(self::$plugin_prefix . '-ajax-nonce')); ?>'
     	    }
     	});
     });
@@ -433,48 +497,57 @@ if (!class_exists('sidemenuCommon')) {
 
                 }
 
-            } elseif (time() > (strtotime('+1 hour', filectime(__DIR__))) && get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version() && !get_option(self::$plugin_prefix . '_donated')) {
+            } elseif (
+                time() > (strtotime('+1 hour', filectime(__DIR__))) &&
+                get_user_meta(get_current_user_id(), self::$plugin_prefix . '-notice-dismissed', true) != self::plugin_version() &&
+                !get_option(self::$plugin_prefix . '_donated')
+            ) {
 
 ?>
 
-<div class="notice notice-info is-dismissible <?php echo self::$plugin_prefix; ?>-notice">
-<p><strong><?php printf(__('Thank you for using %s plugin', self::$plugin_text_domain), self::$plugin_name); ?></strong></p>
+<div class="notice notice-info is-dismissible <?php echo esc_attr(self::$plugin_prefix); ?>-notice">
+<p><strong><?php
+/* translators: name of the plugin */
+printf(esc_html(__('Thank you for using %s plugin', 'sidemenu')), esc_html(self::$plugin_name)); ?></strong></p>
 <?php
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
                 do_action(self::$plugin_prefix . '_admin_notice_donate');
 
 ?>
-<p><?php esc_html_e('Funding plugins like this one with small financial contributions is essential to pay the developers to continue to do what they do. Please take a moment to give a small amount ...', self::$plugin_text_domain); ?></p>
-<p><a href="<?php echo esc_url(self::upgrade_link()); ?>" title="<?php echo esc_attr(sprintf(__('Contribute to %s', self::$plugin_text_domain), self::$plugin_name)); ?>" class="button-primary"><?php printf(__('Contribute to %s', self::$plugin_text_domain), self::$plugin_name); ?></a> <a href="#" id="<?php echo self::$plugin_prefix; ?>-already-paid" title="<?php echo esc_attr(__('Aleady Contributed!', self::$plugin_text_domain)); ?>" class="button-primary"><?php esc_html_e('Aleady Contributed!', self::$plugin_text_domain); ?></a></p>
+<p><?php esc_html_e('Funding plugins like this one with small financial contributions is essential to pay the developers to continue to do what they do. Please take a moment to give a small amount ...', 'sidemenu'); ?></p>
+<p><a href="<?php echo esc_url(self::upgrade_link()); ?>" title="<?php
+/* translators: name of the plugin */
+echo esc_attr(sprintf(__('Contribute to %s', 'sidemenu'), self::$plugin_name)); ?>" class="button-primary"><?php printf(esc_html(__('Contribute to %s', 'sidemenu')), esc_html(self::$plugin_name)); ?></a> <a href="#" id="<?php echo esc_attr(self::$plugin_prefix); ?>-already-paid" title="<?php echo esc_attr(__('Aleady Contributed!', 'sidemenu')); ?>" class="button-primary"><?php esc_html_e('Aleady Contributed!', 'sidemenu'); ?></a></p>
 </div>
 
 <script type="text/javascript">
-    jQuery(document).on('click', '#<?php echo self::$plugin_prefix; ?>-already-paid', function() {
-        if (confirm(<?php echo json_encode(__('Have you really? Press "Cancel" if you forgot to 🙂', self::$plugin_text_domain)); ?>)) {
-            alert(<?php echo json_encode(__('Thank you!', self::$plugin_text_domain)); ?>);
-            jQuery('.<?php echo self::$plugin_prefix; ?>-notice').fadeTo(100, 0, function() {
-                jQuery('.<?php echo self::$plugin_prefix; ?>-notice').slideUp(100, function() {
-                    jQuery('.<?php echo self::$plugin_prefix; ?>-notice').remove()
+    jQuery(document).on('click', '#<?php echo esc_attr(self::$plugin_prefix); ?>-already-paid', function() {
+        if (confirm(<?php echo json_encode(__('Have you really? Press "Cancel" if you forgot to 🙂', 'sidemenu')); ?>)) {
+            alert(<?php echo json_encode(__('Thank you!', 'sidemenu')); ?>);
+            jQuery('.<?php echo esc_attr(self::$plugin_prefix); ?>-notice').fadeTo(100, 0, function() {
+                jQuery('.<?php echo esc_attr(self::$plugin_prefix); ?>-notice').slideUp(100, function() {
+                    jQuery('.<?php echo esc_attr(self::$plugin_prefix); ?>-notice').remove()
                 });
             });
             jQuery.ajax({
             	url: ajaxurl,
             	data: {
-                	action: 'dismiss_<?php echo self::$plugin_prefix; ?>_notice_handler',
+                	action: 'dismiss_<?php echo esc_attr(self::$plugin_prefix); ?>_notice_handler',
             	    donated: 'true',
-        		    _ajax_nonce: '<?php echo wp_create_nonce(self::$plugin_prefix . '-ajax-nonce'); ?>'
+        		    _ajax_nonce: '<?php echo esc_attr(wp_create_nonce(self::$plugin_prefix . '-ajax-nonce')); ?>'
             	}
         	});
         } else {
-            window.location.assign('<?php echo self::upgrade_link(); ?>');
+            window.location.assign('<?php echo esc_url(self::upgrade_link()); ?>');
         }
     });
-    jQuery(document).on('click', '.<?php echo self::$plugin_prefix; ?>-notice .notice-dismiss', function() {
+    jQuery(document).on('click', '.<?php echo esc_attr(self::$plugin_prefix); ?>-notice .notice-dismiss', function() {
     	jQuery.ajax({
     	    url: ajaxurl,
     	    data: {
-        		action: 'dismiss_<?php echo self::$plugin_prefix; ?>_notice_handler',
-        		_ajax_nonce: '<?php echo wp_create_nonce(self::$plugin_prefix . '-ajax-nonce'); ?>'
+        		action: 'dismiss_<?php echo esc_attr(self::$plugin_prefix); ?>_notice_handler',
+        		_ajax_nonce: '<?php echo esc_attr(wp_create_nonce(self::$plugin_prefix . '-ajax-nonce')); ?>'
     	    }
 	    });
     });
@@ -508,14 +581,14 @@ if (!class_exists('sidemenuCommon')) {
                 !(
                     is_admin() && 
                     $pagenow === 'customize.php' &&
-                    isset($_GET['theme']) && 
-                    !in_array($_GET['theme'], $themes, true)
+                    isset($_GET['theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    !in_array($_GET['theme'], $themes, true) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 ) && !(
                     !is_admin() && 
                     $pagenow === 'index.php' &&
-                    isset($_GET['customize_theme']) && 
-                    isset($_GET['customize_changeset_uuid']) && 
-                    !in_array($_GET['customize_theme'], $themes, true)
+                    isset($_GET['customize_theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    isset($_GET['customize_changeset_uuid']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    !in_array($_GET['customize_theme'], $themes, true) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 )
             ) {
 
@@ -529,14 +602,14 @@ if (!class_exists('sidemenuCommon')) {
                 ((
                     is_admin() && 
                     $pagenow === 'customize.php' &&
-                    isset($_GET['theme']) && 
-                    in_array($_GET['theme'], $themes, true)
+                    isset($_GET['theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    in_array($_GET['theme'], $themes, true) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 ) || (
                     !is_admin() && 
                     $pagenow === 'index.php' &&
-                    isset($_GET['customize_theme']) && 
-                    isset($_GET['customize_changeset_uuid']) && 
-                    in_array($_GET['customize_theme'], $themes, true)
+                    isset($_GET['customize_theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    isset($_GET['customize_changeset_uuid']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    in_array($_GET['customize_theme'], $themes, true) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 ))
             ) {
 
@@ -548,12 +621,12 @@ if (!class_exists('sidemenuCommon')) {
             if (
                     !is_admin() && 
                     $pagenow === 'index.php' &&
-                    isset($_GET['customize_theme']) && 
-                    isset($_GET['customize_changeset_uuid'])
+                    isset($_GET['customize_theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    isset($_GET['customize_changeset_uuid']) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 
             ) {
 
-                $child = wp_get_theme($_GET['customize_theme']);
+                $child = wp_get_theme(sanitize_file_name(wp_unslash($_GET['customize_theme']))); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
                 if (isset($child->template) && in_array($child->template, $themes, true)) {
 
@@ -567,16 +640,22 @@ if (!class_exists('sidemenuCommon')) {
             if (
                 is_admin() && 
                 ($pagenow === 'customize.php' || $pagenow === 'admin-ajax.php') &&
-                isset($_GET['theme']) || (isset($_POST['customize_theme']) && isset($_POST['customize_changeset_uuid']))
+                (
+                    isset($_GET['theme']) || // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    (
+                        isset($_POST['customize_theme']) && // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                        isset($_POST['customize_changeset_uuid']) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    )
+                )
             ) {
 
-                if (isset($_GET['theme'])) {
+                if (isset($_GET['theme'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-                    $child = wp_get_theme($_GET['theme']);
+                    $child = wp_get_theme(sanitize_file_name(wp_unslash($_GET['theme']))); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
                 } else {
 
-                    $child = wp_get_theme($_POST['customize_theme']);
+                    $child = wp_get_theme(sanitize_file_name(wp_unslash($_POST['customize_theme']))); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
                 }
 
@@ -598,10 +677,12 @@ if (!class_exists('sidemenuCommon')) {
 
 if (!function_exists('webd_customize_register')) {
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	function webd_customize_register($wp_customize) {
 
 		if (!class_exists('webd_Customize_Control_Checkbox_Multiple')) {
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 		    class webd_Customize_Control_Checkbox_Multiple extends WP_Customize_Control {
 
 		        public $type = 'webd-checkbox-multiple';
@@ -621,7 +702,7 @@ if (!function_exists('webd_customize_register')) {
 		                if ($this->description) {
 
 ?>
-<span class="description customize-control-description"><?php echo $this->description; ?></span>
+<span class="description customize-control-description"><?php echo esc_html($this->description); ?></span>
 <?php
 
 		                }
@@ -646,7 +727,7 @@ if (!function_exists('webd_customize_register')) {
 
 ?>
         </ul>
-        <input type="hidden" id="_customize-input-<?php echo $this->id; ?>" <?php $this->link(); ?> value="<?php echo esc_attr(implode(',', $multi_values)); ?>" />
+        <input type="hidden" id="_customize-input-<?php echo esc_attr($this->id); ?>" <?php $this->link(); ?> value="<?php echo esc_attr(implode(',', $multi_values)); ?>" />
 <?php
 
 		            }
