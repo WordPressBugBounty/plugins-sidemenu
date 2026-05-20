@@ -1,7 +1,13 @@
 <?php
 /*
- * Version: 1.4.3
+ * Version: 1.4.5
  */
+
+
+
+if (!defined('ABSPATH')) {
+    exit('This isn\'t the page you\'re looking for. Move along, move along.');
+}
 
 
 
@@ -506,7 +512,8 @@ echo esc_attr(sprintf(__('Upgrade now to %s Premium', 'sidemenu'), self::$plugin
 ?>
 
 <div class="notice notice-info is-dismissible <?php echo esc_attr(self::$plugin_prefix); ?>-notice">
-<p><strong><?php
+
+    <p><strong><?php
 /* translators: name of the plugin */
 printf(esc_html(__('Thank you for using %s plugin', 'sidemenu')), esc_html(self::$plugin_name)); ?></strong></p>
 <?php
@@ -515,10 +522,21 @@ printf(esc_html(__('Thank you for using %s plugin', 'sidemenu')), esc_html(self:
                 do_action(self::$plugin_prefix . '_admin_notice_donate');
 
 ?>
-<p><?php esc_html_e('Funding plugins like this one with small financial contributions is essential to pay the developers to continue to do what they do. Please take a moment to give a small amount ...', 'sidemenu'); ?></p>
-<p><a href="<?php echo esc_url(self::upgrade_link()); ?>" title="<?php
+
+    <p><?php esc_html_e('Funding plugins like this one with small financial contributions is essential to pay the developers to continue to do what they do. Please take a moment to give a small amount ...', 'sidemenu'); ?></p>
+
+    <p><a href="<?php echo esc_url(self::upgrade_link()); ?>" title="<?php
 /* translators: name of the plugin */
-echo esc_attr(sprintf(__('Contribute to %s', 'sidemenu'), self::$plugin_name)); ?>" class="button-primary"><?php printf(esc_html(__('Contribute to %s', 'sidemenu')), esc_html(self::$plugin_name)); ?></a> <a href="#" id="<?php echo esc_attr(self::$plugin_prefix); ?>-already-paid" title="<?php echo esc_attr(__('Aleady Contributed!', 'sidemenu')); ?>" class="button-primary"><?php esc_html_e('Aleady Contributed!', 'sidemenu'); ?></a></p>
+echo esc_attr(sprintf(__('Contribute to %s', 'sidemenu'), self::$plugin_name)); ?>" class="button-primary"><?php echo esc_html(__('Buy us a coffee ☕️', 'sidemenu')); ?></a> <a href="#" id="<?php echo esc_attr(self::$plugin_prefix); ?>-already-paid" title="<?php echo esc_attr(__('Aleady Contributed!', 'sidemenu')); ?>" class="button-secondary"><?php esc_html_e('Aleady Contributed!', 'sidemenu'); ?></a></p>
+
+    <hr style="margin:12px 0;">
+
+    <p>
+        <strong>✨ Need help with your WordPress site?</strong>
+        🚀 Slow, want new features, or need a glow-up?
+        <a href="https://webd.uk/services/?utm_campaign=notice&utm_term=sidemenu" class="button-secondary" style="margin-left:6px; vertical-align: middle;">Explore our services</a>
+    </p>
+
 </div>
 
 <script type="text/javascript">
